@@ -56,19 +56,24 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data)
 {
     QScriptEngine engine;
 
-    QVector<double> x(1001), y(1001); // initialize with entries 0..1000
+    QVector<double> x(10001), y(10001); // initialize with entries 0..10000
     string_mod(input_data);
 
     // for testing user input
     qDebug()<<input_data;
 
     // real plotting :)
-    for (int i=0; i<1001; ++i)
+    for (int i=0; i<10001; ++i)
     {
-      x[i] = i/50.0; // x goes from 0 to 20
+      x[i] = i/50.0 - 100; // x goes from -100 to 100
       engine.globalObject().setProperty("x",x[i]);
       y[i] = engine.evaluate(input_data).toNumber(); // let's plot a quadratic function
     }
+
+    // add user interactivity
+    customPlot->setInteraction(QCP::iRangeDrag, true);
+    customPlot->setInteraction(QCP::iRangeZoom, true);
+    customPlot->setInteraction(QCP::iSelectPlottables, true);
 
     // create graph and assign data to it:
     customPlot->addGraph();
@@ -79,7 +84,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data)
     customPlot->yAxis->setLabel("y");
 
     // set axes ranges, so we see all data:
-    customPlot->xAxis->setRange(0, 20);
-    customPlot->yAxis->setRange(0, 20);
+    customPlot->xAxis->setRange(-5, 5);
+    customPlot->yAxis->setRange(-5, 5);
     customPlot->replot();
 }
