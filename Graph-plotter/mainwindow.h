@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 public:
     QLineEdit *input = new QLineEdit();
     QCustomPlot *customplot = new QCustomPlot();
+    QWidget* functions_disp();
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -24,6 +25,7 @@ private:
 
 public slots:
         void on_plot_button_clicked();
+        void function_clicked();
     };
 
 #endif // MAINWINDOW_H

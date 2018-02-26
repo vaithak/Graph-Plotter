@@ -12,8 +12,11 @@
 #include "start_plotting.h"
 #include <QSignalMapper>
 
-QWidget* functions_disp()
+QWidget* MainWindow::functions_disp()
 {
+    QLabel *func_head = new QLabel("   Functions :-   ");
+    func_head->setStyleSheet("font-style:italic");
+
     QPushButton *add = new QPushButton(QObject::tr("+"));
     QPushButton *modulo = new QPushButton(QObject::tr("%"));
     QPushButton *subtract = new QPushButton(QObject::tr("-"));
@@ -39,39 +42,86 @@ QWidget* functions_disp()
     QPushButton *floor = new QPushButton(QObject::tr("floor"));
     QPushButton *ceil = new QPushButton(QObject::tr("ceil"));
     QPushButton *abs = new QPushButton(QObject::tr("abs"));
-
+    QPushButton *open = new QPushButton(QObject::tr("("));
+    QPushButton *closed = new QPushButton(QObject::tr(")"));
+    QPushButton *var = new QPushButton(QObject::tr("x"));
 
     QGridLayout *functions = new QGridLayout();
-    functions->addWidget(add,0,0,1,1);
-    functions->addWidget(subtract,0,1,1,1);
-    functions->addWidget(multiply,1,0,1,1);
-    functions->addWidget(divide,1,1,1,1);
-    functions->addWidget(modulo,2,0,1,1);
-    functions->addWidget(power2,2,1,1,1);
-    functions->addWidget(pow,3,0,1,1);
-    functions->addWidget(sqrt,3,1,1,1);
-    functions->addWidget(sin,4,0,1,1);
-    functions->addWidget(cos,4,1,1,1);
-    functions->addWidget(tan,5,0,1,1);
-    functions->addWidget(sec,5,1,1,1);
-    functions->addWidget(cosec,6,0,1,1);
-    functions->addWidget(cot,6,1,1,1);
-    functions->addWidget(arcsin,7,0,1,1);
-    functions->addWidget(arccos,7,1,1,1);
-    functions->addWidget(arctan,8,0,1,1);
-    functions->addWidget(floor,8,1,1,1);
-    functions->addWidget(ceil,9,0,1,1);
-    functions->addWidget(max,9,1,1,1);
-    functions->addWidget(min,10,0,1,1);
-    functions->addWidget(abs,10,1,1,1);
-    functions->addWidget(exp,11,0,1,1);
-    functions->addWidget(pi,11,1,1,1);
+    functions->addWidget(func_head,0,0,1,2);
+    functions->addWidget(add,1,0,1,1);
+    functions->addWidget(subtract,1,1,1,1);
+    functions->addWidget(multiply,2,0,1,1);
+    functions->addWidget(divide,2,1,1,1);
+    functions->addWidget(modulo,3,0,1,1);
+    functions->addWidget(power2,3,1,1,1);
+    functions->addWidget(pow,4,0,1,1);
+    functions->addWidget(sqrt,4,1,1,1);
+    functions->addWidget(sin,5,0,1,1);
+    functions->addWidget(cos,5,1,1,1);
+    functions->addWidget(tan,6,0,1,1);
+    functions->addWidget(sec,6,1,1,1);
+    functions->addWidget(cosec,7,0,1,1);
+    functions->addWidget(cot,7,1,1,1);
+    functions->addWidget(arcsin,8,0,1,1);
+    functions->addWidget(arccos,8,1,1,1);
+    functions->addWidget(arctan,9,0,1,1);
+    functions->addWidget(floor,9,1,1,1);
+    functions->addWidget(ceil,10,0,1,1);
+    functions->addWidget(max,10,1,1,1);
+    functions->addWidget(min,11,0,1,1);
+    functions->addWidget(abs,11,1,1,1);
+    functions->addWidget(exp,12,0,1,1);
+    functions->addWidget(pi,12,1,1,1);
+    functions->addWidget(log,13,0,1,1);
+    functions->addWidget(open,13,1,1,1);
+    functions->addWidget(closed,14,0,1,1);
+    functions->addWidget(var,14,1,1,1);
 
     functions->setHorizontalSpacing(0);
     functions->setVerticalSpacing(0);
+
+    // adding signals and slots to buttons
+    QObject::connect(sin,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(cos,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(add,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(multiply,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(divide,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(sqrt,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(pi,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(exp,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(max,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(min,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(abs,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(log,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(floor,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(modulo,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(subtract,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(tan,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(sec,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(cosec,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(cot,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(arctan,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(arcsin,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(arccos,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(ceil,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(open,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(closed,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(var,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+
+
+    // adding buttons into layout and finally into a widget
     QWidget *function_widget = new QWidget();
     function_widget->setLayout(functions);
     return function_widget;
+}
+
+void MainWindow::function_clicked()
+{
+    QPushButton *press = (QPushButton*) sender();
+    if(press->text() == '(' || press->text() == ')' || press->text() == 'x')
+        input->insert(press->text());
+    else
+        input->insert(press->text() + '(');
 }
 
 void MainWindow::on_plot_button_clicked()
@@ -93,7 +143,7 @@ int main(int argc, char *argv[])
 
     // preparing the functions layout
     QWidget *function_widget=new QWidget();
-    function_widget=functions_disp();
+    function_widget=window.functions_disp();
 
     // line-edit and qwidget layout
     window.input->setFixedHeight(40);
@@ -121,18 +171,21 @@ int main(int argc, char *argv[])
 //    display->setStyleSheet("background-color:black");
     display->setLayout(full_screen);
     window.setCentralWidget(display);
-
     window.setStyleSheet("QWidget {"
                          "background-color:black;"
                          "}"
 
-                         "QPushButton {"
+                         "QPushButton{"
                          "background-color:white;"
-                         "min-width:30px;"
-                         "min-height:40px;"
+                         "min-width:125px;"
+                         "min-height:37px;"
+                         "max-width:125px;"
+                         "max-height:37px;"
                          "font-size:18px;"
                          "border:1px solid;"
-                         "font-family:Sans-Serif"
+                         "margin:3px;"
+                         "font-family:Sans-Serif;"
+                         "font-style:italic"
                          "}"
 
                          "QPushButton:hover {"
@@ -145,7 +198,10 @@ int main(int argc, char *argv[])
                          "}"
 
                          "QLabel {"
-                         "background-color:white;"
+                         "background-color:#00f1ff;"
+                         "min-height:30px;"
+                         "font-size:25px;"
+                         "color:black"
                          "}"
 
                          "QLineEdit {"

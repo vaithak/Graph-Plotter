@@ -10,6 +10,7 @@ void string_mod(QString &inputted)
 
     inputted.replace("pow","Math.pow");
     inputted.replace("sqrt","Math.sqrt");
+    inputted.replace("√","Math.sqrt");
     inputted.replace("log","Math.log");
     inputted.replace("X","x");
     inputted.replace("abs","Math.abs");
@@ -77,6 +78,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data)
 
     // create graph and assign data to it:
     customPlot->addGraph();
+    customPlot->graph(0)->setPen(QPen(Qt::red));
     customPlot->graph(0)->setData(x, y);
 
     // give the axes some labels:
