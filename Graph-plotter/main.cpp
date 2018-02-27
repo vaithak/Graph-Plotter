@@ -118,10 +118,18 @@ QWidget* MainWindow::functions_disp()
 void MainWindow::function_clicked()
 {
     QPushButton *press = (QPushButton*) sender();
-    if(press->text() == '(' || press->text() == ')' || press->text() == 'x')
-        this->input1->insert(press->text());
-    else
-        this->input1->insert(press->text() + '(');
+    QLineEdit* current = qobject_cast<QLineEdit*>(this->focusWidget());
+    if(current!=0)
+    {
+        if(press->text() == '(' || press->text() == ')' || press->text() == 'x')
+        {
+            current->insert(press->text());
+        }
+        else
+        {
+            current->insert(press->text() + '(');
+        }
+    }
 }
 
 void MainWindow::on_plot_button_clicked()
