@@ -26,9 +26,11 @@ void string_mod(QString &inputted1 , QString &inputted2)
 
     inputted1.replace("e","Math.E");
     inputted1.replace("pi","Math.PI");
+    inputted1.replace("π","Math.PI");
 
     inputted2.replace("e","Math.E");
     inputted2.replace("pi","Math.PI");
+    inputted2.replace("π","Math.PI");
 
     // trignometric functions
 
@@ -167,22 +169,33 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
        // so that graph index doesn't go out of bound
        if(input_data_1=="")
        {
-           customPlot->graph(2)->setPen(QPen(Qt::green,3));
+           customPlot->graph(2)->setPen(QPen(Qt::green,2));
            customPlot->graph(2)->setData(x2, y2);
        }
        else
        {
-           customPlot->graph(3)->setPen(QPen(Qt::green,3));
+           customPlot->graph(3)->setPen(QPen(Qt::green,2));
            customPlot->graph(3)->setData(x2, y2);
        }
     }
 
     // plotting the intersection graph
-    customPlot->addGraph();
-    customPlot->graph(4)->setLineStyle(QCPGraph::lsNone);
-    customPlot->graph(4)->setScatterStyle(QCPScatterStyle::ssCircle);
-    customPlot->graph(4)->setData(xint,yint);
-    customPlot->graph(4)->setPen(QPen(Qt::gray,4));
+    if(input_data_1!=""  && input_data_2!="")
+    {
+        customPlot->addGraph();
+        customPlot->graph(4)->setLineStyle(QCPGraph::lsNone);
+        customPlot->graph(4)->setScatterStyle(QCPScatterStyle::ssCircle);
+        customPlot->graph(4)->setData(xint,yint);
+        customPlot->graph(4)->setPen(QPen(Qt::gray,4));
+    }
+    else if(input_data_1!="" || input_data_2!="")
+    {
+        customPlot->addGraph();
+        customPlot->graph(3)->setLineStyle(QCPGraph::lsNone);
+        customPlot->graph(3)->setScatterStyle(QCPScatterStyle::ssCircle);
+        customPlot->graph(3)->setData(xint,yint);
+        customPlot->graph(3)->setPen(QPen(Qt::gray,4));
+    }
 
     // add user interactivity
     customPlot->setInteraction(QCP::iRangeDrag, true);
