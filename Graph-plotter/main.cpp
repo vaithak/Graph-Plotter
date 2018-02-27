@@ -25,8 +25,7 @@ QWidget* MainWindow::functions_disp()
     QPushButton *sin = new QPushButton(QObject::tr("sin"));
     QPushButton *cos = new QPushButton(QObject::tr("cos"));
     QPushButton *tan = new QPushButton(QObject::tr("tan"));
-    QPushButton *power2 = new QPushButton(QObject::tr("x\u00B2"));
-    QPushButton *pow = new QPushButton(QObject::tr("a\u1d47"));
+    QPushButton *pow = new QPushButton(QObject::tr("pow"));
     QPushButton *sqrt = new QPushButton(QObject::tr("\u221A"));
     QPushButton *log = new QPushButton(QObject::tr("log"));
     QPushButton *exp = new QPushButton(QObject::tr("e"));
@@ -44,7 +43,6 @@ QWidget* MainWindow::functions_disp()
     QPushButton *abs = new QPushButton(QObject::tr("abs"));
     QPushButton *open = new QPushButton(QObject::tr("("));
     QPushButton *closed = new QPushButton(QObject::tr(")"));
-    QPushButton *var = new QPushButton(QObject::tr("x"));
 
     QGridLayout *functions = new QGridLayout();
     functions->addWidget(func_head,0,0,1,2);
@@ -53,29 +51,27 @@ QWidget* MainWindow::functions_disp()
     functions->addWidget(multiply,2,0,1,1);
     functions->addWidget(divide,2,1,1,1);
     functions->addWidget(modulo,3,0,1,1);
-    functions->addWidget(power2,3,1,1,1);
-    functions->addWidget(pow,4,0,1,1);
-    functions->addWidget(sqrt,4,1,1,1);
-    functions->addWidget(sin,5,0,1,1);
-    functions->addWidget(cos,5,1,1,1);
-    functions->addWidget(tan,6,0,1,1);
-    functions->addWidget(sec,6,1,1,1);
-    functions->addWidget(cosec,7,0,1,1);
-    functions->addWidget(cot,7,1,1,1);
-    functions->addWidget(arcsin,8,0,1,1);
-    functions->addWidget(arccos,8,1,1,1);
-    functions->addWidget(arctan,9,0,1,1);
-    functions->addWidget(floor,9,1,1,1);
-    functions->addWidget(ceil,10,0,1,1);
-    functions->addWidget(max,10,1,1,1);
-    functions->addWidget(min,11,0,1,1);
-    functions->addWidget(abs,11,1,1,1);
-    functions->addWidget(exp,12,0,1,1);
-    functions->addWidget(pi,12,1,1,1);
-    functions->addWidget(log,13,0,1,1);
-    functions->addWidget(open,13,1,1,1);
-    functions->addWidget(closed,14,0,1,1);
-    functions->addWidget(var,14,1,1,1);
+    functions->addWidget(pow,3,1,1,1);
+    functions->addWidget(sqrt,4,0,1,1);
+    functions->addWidget(sin,4,1,1,1);
+    functions->addWidget(cos,5,0,1,1);
+    functions->addWidget(tan,5,1,1,1);
+    functions->addWidget(sec,6,0,1,1);
+    functions->addWidget(cosec,6,1,1,1);
+    functions->addWidget(cot,7,0,1,1);
+    functions->addWidget(arcsin,7,1,1,1);
+    functions->addWidget(arccos,8,0,1,1);
+    functions->addWidget(arctan,8,1,1,1);
+    functions->addWidget(floor,9,0,1,1);
+    functions->addWidget(ceil,9,1,1,1);
+    functions->addWidget(max,10,0,1,1);
+    functions->addWidget(min,10,1,1,1);
+    functions->addWidget(abs,11,0,1,1);
+    functions->addWidget(exp,11,1,1,1);
+    functions->addWidget(pi,12,0,1,1);
+    functions->addWidget(log,12,1,1,1);
+    functions->addWidget(open,13,0,1,1);
+    functions->addWidget(closed,13,1,1,1);
 
     functions->setHorizontalSpacing(0);
     functions->setVerticalSpacing(0);
@@ -89,6 +85,7 @@ QWidget* MainWindow::functions_disp()
     QObject::connect(sqrt,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(pi,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(exp,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
+    QObject::connect(pow,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(max,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(min,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(abs,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
@@ -106,7 +103,6 @@ QWidget* MainWindow::functions_disp()
     QObject::connect(ceil,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(open,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(closed,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
-    QObject::connect(var,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
 
 
     // adding buttons into layout and finally into a widget
@@ -121,7 +117,11 @@ void MainWindow::function_clicked()
     QLineEdit* current = qobject_cast<QLineEdit*>(this->focusWidget());
     if(current!=0)
     {
-        if(press->text() == '(' || press->text() == ')' || press->text() == 'x' || press->text()=="π" || press->text()=="e")
+        if(press->text() == '(' || press->text() == ')' || press->text()=="π" || press->text()=="e")
+        {
+            current->insert(press->text());
+        }
+        else if(press->text() == "+" || press->text() == "%" || press->text() == "*" || press->text() == "-")
         {
             current->insert(press->text());
         }

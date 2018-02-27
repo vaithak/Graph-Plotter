@@ -120,7 +120,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
             y1[i] = engine.evaluate(input_data_1).toNumber(); // let's plot a quadratic function
 
             // marking the intersection points
-            if(abs(y1[i]-0)<0.007)
+            if(abs(y1[i]-0)<0.015)
             {
                 xint.push_back(x1[i]);
                 yint.push_back(y1[i]);
@@ -134,7 +134,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
 
         // create graph and assign data to it:
         customPlot->addGraph();
-        customPlot->graph(2)->setPen(QPen(Qt::red,3));
+        customPlot->graph(2)->setPen(QPen(Qt::red,2));
         customPlot->graph(2)->setData(x1, y1);
     }
     if(input_data_2!="")
@@ -146,7 +146,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
             y2[i] = engine.evaluate(input_data_2).toNumber(); // let's plot a quadratic function
 
             // marking the intersection points
-            if(abs(y2[i]-0)<0.007)
+            if(abs(y2[i]-0)<0.015)
             {
                 xint.push_back(x2[i]);
                 yint.push_back(y2[i]);
@@ -156,7 +156,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
                 xint.push_back(x2[i]);
                 yint.push_back(y2[i]);
             }
-            else if(abs(y1[i]-y2[i])<0.007)
+            else if(abs(y1[i]-y2[i])<0.015)
             {
                 xint.push_back(x2[i]);
                 yint.push_back(y2[i]);
