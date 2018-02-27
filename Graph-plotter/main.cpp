@@ -126,9 +126,8 @@ void MainWindow::function_clicked()
 
 void MainWindow::on_plot_button_clicked()
 {
-    qDebug()<<(this->input1->text());
-    plotting_graph(this->customplot,this->input1->text());
-
+    qDebug()<<(this->input1->text())<<(this->input2->text());
+    plotting_graph(this->customplot,this->input1->text(),this->input2->text());
 }
 
 int main(int argc, char *argv[])

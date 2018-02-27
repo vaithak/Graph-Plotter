@@ -3,83 +3,153 @@
 #include <QScriptEngine>
 #include <QRegularExpression>
 
-void string_mod(QString &inputted)
+void string_mod(QString &inputted1 , QString &inputted2)
 {
 
     // logarithmic , power , squareroot , absolute and exponential functions
 
-    inputted.replace("pow","Math.pow");
-    inputted.replace("sqrt","Math.sqrt");
-    inputted.replace("√","Math.sqrt");
-    inputted.replace("log","Math.log");
-    inputted.replace("X","x");
-    inputted.replace("abs","Math.abs");
+    inputted1.replace("pow","Math.pow");
+    inputted1.replace("sqrt","Math.sqrt");
+    inputted1.replace("√","Math.sqrt");
+    inputted1.replace("log","Math.log");
+    inputted1.replace("X","x");
+    inputted1.replace("abs","Math.abs");
 
+    inputted2.replace("pow","Math.pow");
+    inputted2.replace("sqrt","Math.sqrt");
+    inputted2.replace("√","Math.sqrt");
+    inputted2.replace("log","Math.log");
+    inputted2.replace("X","x");
+    inputted2.replace("abs","Math.abs");
 
     //Mathematical constants
 
-    inputted.replace("e","Math.E");
-    inputted.replace("pi","Math.PI");
+    inputted1.replace("e","Math.E");
+    inputted1.replace("pi","Math.PI");
 
+    inputted2.replace("e","Math.E");
+    inputted2.replace("pi","Math.PI");
 
     // trignometric functions
 
     QRegularExpression re("(?<!c)sin"); // so that arcsin doesn't become arcMath.sin
-    inputted.replace(re,"Math.sin");
-    inputted.replace("arcsin","Math.asin");
+    inputted1.replace(re,"Math.sin");
+    inputted1.replace("arcsin","Math.asin");
+    inputted2.replace(re,"Math.sin");
+    inputted2.replace("arcsin","Math.asin");
 
     re.setPattern("(?<!c)cos"); // so that arccos doesn't become arcMath.cos
-    inputted.replace(re,"Math.cos");
-    inputted.replace("arccos","Math.acos");
+    inputted1.replace(re,"Math.cos");
+    inputted1.replace("arccos","Math.acos");
+    inputted2.replace(re,"Math.cos");
+    inputted2.replace("arccos","Math.acos");
 
     re.setPattern("(?<!c)tan"); // so that arctan doesn't become arcMath.tan
-    inputted.replace(re,"Math.tan");
-    inputted.replace("arctan","Math.atan");
+    inputted1.replace(re,"Math.tan");
+    inputted1.replace("arctan","Math.atan");
+    inputted2.replace(re,"Math.tan");
+    inputted2.replace("arctan","Math.atan");
 
     re.setPattern("(?<!c)cot"); // so that arccot doesn't become arcMath.cot
-    inputted.replace(re,"Math.cot");
-    inputted.replace("arccot","Math.acot");
+    inputted1.replace(re,"Math.cot");
+    inputted1.replace("arccot","Math.acot");
+    inputted2.replace(re,"Math.cot");
+    inputted2.replace("arccot","Math.acot");
 
 
     // basic statistical functions
 
-    inputted.replace("floor","Math.floor");
-    inputted.replace("ceil","Math.ceil");
-    inputted.replace("max","Math.max");
-    inputted.replace("min","Math.min");
+    inputted1.replace("floor","Math.floor");
+    inputted1.replace("ceil","Math.ceil");
+    inputted1.replace("max","Math.max");
+    inputted1.replace("min","Math.min");
+
+    inputted2.replace("floor","Math.floor");
+    inputted2.replace("ceil","Math.ceil");
+    inputted2.replace("max","Math.max");
+    inputted2.replace("min","Math.min");
 
     // for replacing ^ operator with
 //    QRegularExpression re("");
 //    inputted.replace(re,"Math.pow");
 }
 
-void plotting_graph(QCustomPlot *customPlot, QString input_data)
+void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input_data_2)
 {
     QScriptEngine engine;
 
-    QVector<double> x(10001), y(10001); // initialize with entries 0..10000
-    string_mod(input_data);
+    QVector<double> x1(10001),y1(10001),x2(10001),y2(10001); // initialize with entries 0..10000
+    string_mod(input_data_1,input_data_2);
 
     // for testing user input
-    qDebug()<<input_data;
+    qDebug()<<input_data_1<<input_data_2;
+
+    // making x-Axis and y-Axis
+    QVector<double> xx(100001),xy(100001,0),yx(100001,0),yy(100001);
+
+    if(input_data_1!="" || input_data_2!="")
+    {
+        for(int i=0 ;i<100001;i++)
+        {
+            xx[i]=i-50000;
+            yy[i]=i-50000;
+        }
+
+        // x-Axis
+        customPlot->addGraph();
+        customPlot->graph(0)->setPen(QPen(Qt::black,0.6));
+        customPlot->graph(0)->setData(xx,xy);
+
+        // y-Axis
+        customPlot->addGraph();
+        customPlot->graph(1)->setPen(QPen(Qt::black,0.6));
+        customPlot->graph(1)->setData(yx,yy);
+    }
 
     // real plotting :)
-    for (int i=0; i<10001; ++i)
+    if(input_data_1!="")
     {
-      x[i] = i/50.0 - 100; // x goes from -100 to 100
-      engine.globalObject().setProperty("x",x[i]);
-      y[i] = engine.evaluate(input_data).toNumber(); // let's plot a quadratic function
+        for (int i=0; i<10001; ++i)
+        {
+            x1[i] = i/50.0 - 100; // x goes from -100 to 100
+            engine.globalObject().setProperty("x",x1[i]);
+            y1[i] = engine.evaluate(input_data_1).toNumber(); // let's plot a quadratic function
+        }
+
+        // create graph and assign data to it:
+        customPlot->addGraph();
+        customPlot->graph(2)->setPen(QPen(Qt::red,3));
+        customPlot->graph(2)->setData(x1, y1);
+    }
+    if(input_data_2!="")
+    {
+       for (int i=0; i<10001; ++i)
+        {
+            x2[i] = i/50.0 - 100; // x goes from -100 to 100
+            engine.globalObject().setProperty("x",x2[i]);
+            y2[i] = engine.evaluate(input_data_2).toNumber(); // let's plot a quadratic function
+        }
+
+       // create second graph and assign data to it:
+       customPlot->addGraph();
+
+       // so that graph index doesn't go out of bound
+       if(input_data_1=="")
+       {
+           customPlot->graph(2)->setPen(QPen(Qt::green,3));
+           customPlot->graph(2)->setData(x2, y2);
+       }
+       else
+       {
+           customPlot->graph(3)->setPen(QPen(Qt::green,3));
+           customPlot->graph(3)->setData(x2, y2);
+       }
     }
 
     // add user interactivity
     customPlot->setInteraction(QCP::iRangeDrag, true);
     customPlot->setInteraction(QCP::iRangeZoom, true);
     customPlot->setInteraction(QCP::iSelectPlottables, true);
-
-    // create graph and assign data to it:
-    customPlot->addGraph();
-    customPlot->graph(0)->setPen(QPen(Qt::red));
-    customPlot->graph(0)->setData(x, y);
 
     // give the axes some labels:
     customPlot->xAxis->setLabel("x");
