@@ -81,6 +81,9 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
     QVector<double> x1(10001),y1(10001),x2(10001),y2(10001); // initialize with entries 0..10000
     string_mod(input_data_1,input_data_2);
 
+    // for intersection points
+    QVector<double> xint,yint;
+
     // for testing user input
     qDebug()<<input_data_1<<input_data_2;
 
@@ -97,7 +100,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
 
         // x-Axis
         customPlot->addGraph();
-        customPlot->graph(0)->setPen(QPen(Qt::black,0.6));
+        customPlot->graph(0)->setPen(QPen(Qt::yellow,0.6));
         customPlot->graph(0)->setData(xx,xy);
 
         // y-Axis
@@ -114,6 +117,18 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
             x1[i] = i/50.0 - 100; // x goes from -100 to 100
             engine.globalObject().setProperty("x",x1[i]);
             y1[i] = engine.evaluate(input_data_1).toNumber(); // let's plot a quadratic function
+
+            // marking the intersection points
+            if(abs(y1[i]-0)<0.009)
+            {
+                xint.push_back(x1[i]);
+                yint.push_back(y1[i]);
+            }
+            else if(x1[i]==0)
+            {
+                xint.push_back(x1[i]);
+                yint.push_back(y1[i]);
+            }
         }
 
         // create graph and assign data to it:
@@ -128,6 +143,23 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
             x2[i] = i/50.0 - 100; // x goes from -100 to 100
             engine.globalObject().setProperty("x",x2[i]);
             y2[i] = engine.evaluate(input_data_2).toNumber(); // let's plot a quadratic function
+
+            // marking the intersection points
+            if(abs(y2[i]-0)<0.009)
+            {
+                xint.push_back(x2[i]);
+                yint.push_back(y2[i]);
+            }
+            else if(x2[i]==0)
+            {
+                xint.push_back(x2[i]);
+                yint.push_back(y2[i]);
+            }
+            else if(abs(y1[i]-y2[i])<0.009)
+            {
+                xint.push_back(x2[i]);
+                yint.push_back(y2[i]);
+            }
         }
 
        // create second graph and assign data to it:
@@ -145,6 +177,13 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
            customPlot->graph(3)->setData(x2, y2);
        }
     }
+
+    // plotting the intersection graph
+    customPlot->addGraph();
+    customPlot->graph(4)->setLineStyle(QCPGraph::lsNone);
+    customPlot->graph(4)->setScatterStyle(QCPScatterStyle::ssCircle);
+    customPlot->graph(4)->setData(xint,yint);
+    customPlot->graph(4)->setPen(QPen(Qt::gray,4));
 
     // add user interactivity
     customPlot->setInteraction(QCP::iRangeDrag, true);

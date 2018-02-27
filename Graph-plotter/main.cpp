@@ -200,7 +200,6 @@ int main(int argc, char *argv[])
     full_screen->addWidget(rightpart,0,4,20,8);
 
     QWidget *display = new QWidget();
-//    display->setStyleSheet("background-color:black");
     display->setLayout(full_screen);
     window.setCentralWidget(display);
     window.setStyleSheet("QWidget {"
