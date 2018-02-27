@@ -119,15 +119,15 @@ void MainWindow::function_clicked()
 {
     QPushButton *press = (QPushButton*) sender();
     if(press->text() == '(' || press->text() == ')' || press->text() == 'x')
-        input->insert(press->text());
+        this->input1->insert(press->text());
     else
-        input->insert(press->text() + '(');
+        this->input1->insert(press->text() + '(');
 }
 
 void MainWindow::on_plot_button_clicked()
 {
-    qDebug()<<(input->text());
-    plotting_graph(customplot,input->text());
+    qDebug()<<(this->input1->text());
+    plotting_graph(this->customplot,this->input1->text());
 
 }
 
@@ -146,16 +146,41 @@ int main(int argc, char *argv[])
     function_widget=window.functions_disp();
 
     // line-edit and qwidget layout
-    window.input->setFixedHeight(40);
-    window.input->setStyleSheet("font-size:30px");
+    window.input1->setFixedHeight(40);
+    window.input1->setStyleSheet("font-size:30px");
+    window.input2->setFixedHeight(40);
+    window.input2->setStyleSheet("font-size:30px");
     QPushButton *plot_button = new QPushButton("  Start Plotting  ");
     plot_button->setStyleSheet("background-color:#7cfc60;");
 
     // sending data to plotting function
     QObject::connect(plot_button, SIGNAL(clicked(bool)) ,&window, SLOT(on_plot_button_clicked()));
 
+    // first input
+    QHBoxLayout* first_input_layout = new QHBoxLayout();
+    QLabel* f1x = new QLabel(" \u0192\u2081(x) = ");
+    f1x->setFixedHeight(45);
+    first_input_layout->addWidget(f1x);
+    first_input_layout->addWidget(window.input1);
+    first_input_layout->setMargin(0);
+    QWidget* first_input = new QWidget();
+    first_input->setLayout(first_input_layout);
+    first_input->setFixedHeight(60);
+
+    // second input
+    QHBoxLayout* second_input_layout = new QHBoxLayout();
+    QLabel* f2x = new QLabel(" \u0192\u2082(x) = ");
+    f2x->setFixedHeight(45);
+    second_input_layout->addWidget(f2x);
+    second_input_layout->addWidget(window.input2);
+    second_input_layout->setMargin(0);
+    QWidget* second_input = new QWidget();
+    second_input->setLayout(second_input_layout);
+    second_input->setFixedHeight(60);
+
     QVBoxLayout *plot = new QVBoxLayout();
-    plot->addWidget(window.input);
+    plot->addWidget(first_input);
+    plot->addWidget(second_input);
     plot->addWidget(plot_button);
     plot->addWidget(window.customplot);
     plot->setAlignment(plot_button,Qt::AlignRight);
@@ -177,13 +202,12 @@ int main(int argc, char *argv[])
 
                          "QPushButton{"
                          "background-color:white;"
-                         "min-width:125px;"
+                         "min-width:129px;"
                          "min-height:37px;"
-                         "max-width:125px;"
+                         "max-width:129px;"
                          "max-height:37px;"
                          "font-size:18px;"
                          "border:1px solid;"
-                         "margin:3px;"
                          "font-family:Sans-Serif;"
                          "font-style:italic"
                          "}"
@@ -201,7 +225,8 @@ int main(int argc, char *argv[])
                          "background-color:#00f1ff;"
                          "min-height:30px;"
                          "font-size:25px;"
-                         "color:black"
+                         "color:black;"
+                         "margin:0px;"
                          "}"
 
                          "QLineEdit {"

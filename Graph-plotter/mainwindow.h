@@ -10,7 +10,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    QLineEdit *input = new QLineEdit();
+    QLineEdit* input1 = new QLineEdit();
+    QLineEdit* input2 = new QLineEdit();
     QCustomPlot *customplot = new QCustomPlot();
     QWidget* functions_disp();
 
