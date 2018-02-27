@@ -78,7 +78,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
 {
     QScriptEngine engine;
 
-    QVector<double> x1(100001),y1(100001),x2(100001),y2(100001); // initialize with entries 0..10000
+    QVector<double> x1(20001),y1(20001),x2(20001),y2(20001); // initialize with entries 0..10000
     string_mod(input_data_1,input_data_2);
 
     // for intersection points
@@ -111,9 +111,9 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
     // real plotting :)
     if(input_data_1!="")
     {
-        for (int i=0; i<100001; ++i)
+        for (int i=0; i<20001; ++i)
         {
-            x1[i] = i/500.0 - 100; // x goes from -100 to 100
+            x1[i] = i/100.0 - 100; // x goes from -100 to 100
             engine.globalObject().setProperty("x",x1[i]);
             y1[i] = engine.evaluate(input_data_1).toNumber(); // let's plot a quadratic function
 
@@ -137,9 +137,9 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
     }
     if(input_data_2!="")
     {
-       for (int i=0; i<100001; ++i)
+       for (int i=0; i<20001; ++i)
         {
-            x2[i] = i/500.0 - 100; // x goes from -100 to 100
+            x2[i] = i/100.0 - 100; // x goes from -100 to 100
             engine.globalObject().setProperty("x",x2[i]);
             y2[i] = engine.evaluate(input_data_2).toNumber(); // let's plot a quadratic function
 
