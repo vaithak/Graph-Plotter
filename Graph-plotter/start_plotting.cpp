@@ -78,7 +78,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
 {
     QScriptEngine engine;
 
-    QVector<double> x1(10001),y1(10001),x2(10001),y2(10001); // initialize with entries 0..10000
+    QVector<double> x1(100001),y1(100001),x2(100001),y2(100001); // initialize with entries 0..10000
     string_mod(input_data_1,input_data_2);
 
     // for intersection points
@@ -88,19 +88,18 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
     qDebug()<<input_data_1<<input_data_2;
 
     // making x-Axis and y-Axis
-    QVector<double> xx(100001),xy(100001,0),yx(100001,0),yy(100001);
+    QVector<double> xx(2),xy(2,0),yx(2,0),yy(2);
 
     if(input_data_1!="" || input_data_2!="")
     {
-        for(int i=0 ;i<100001;i++)
-        {
-            xx[i]=i-50000;
-            yy[i]=i-50000;
-        }
+        xx[0]=-500000;
+        xx[1]=500000;
+        yy[0]=500000;
+        yy[1]=-500000;
 
         // x-Axis
         customPlot->addGraph();
-        customPlot->graph(0)->setPen(QPen(Qt::yellow,0.6));
+        customPlot->graph(0)->setPen(QPen(Qt::black,0.6));
         customPlot->graph(0)->setData(xx,xy);
 
         // y-Axis
@@ -112,14 +111,14 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
     // real plotting :)
     if(input_data_1!="")
     {
-        for (int i=0; i<10001; ++i)
+        for (int i=0; i<100001; ++i)
         {
-            x1[i] = i/50.0 - 100; // x goes from -100 to 100
+            x1[i] = i/500.0 - 100; // x goes from -100 to 100
             engine.globalObject().setProperty("x",x1[i]);
             y1[i] = engine.evaluate(input_data_1).toNumber(); // let's plot a quadratic function
 
             // marking the intersection points
-            if(abs(y1[i]-0)<0.009)
+            if(abs(y1[i]-0)<0.007)
             {
                 xint.push_back(x1[i]);
                 yint.push_back(y1[i]);
@@ -138,14 +137,14 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
     }
     if(input_data_2!="")
     {
-       for (int i=0; i<10001; ++i)
+       for (int i=0; i<100001; ++i)
         {
-            x2[i] = i/50.0 - 100; // x goes from -100 to 100
+            x2[i] = i/500.0 - 100; // x goes from -100 to 100
             engine.globalObject().setProperty("x",x2[i]);
             y2[i] = engine.evaluate(input_data_2).toNumber(); // let's plot a quadratic function
 
             // marking the intersection points
-            if(abs(y2[i]-0)<0.009)
+            if(abs(y2[i]-0)<0.007)
             {
                 xint.push_back(x2[i]);
                 yint.push_back(y2[i]);
@@ -155,7 +154,7 @@ void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input
                 xint.push_back(x2[i]);
                 yint.push_back(y2[i]);
             }
-            else if(abs(y1[i]-y2[i])<0.009)
+            else if(abs(y1[i]-y2[i])<0.007)
             {
                 xint.push_back(x2[i]);
                 yint.push_back(y2[i]);
