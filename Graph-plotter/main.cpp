@@ -132,6 +132,27 @@ void MainWindow::function_clicked()
     }
 }
 
+void MainWindow::on_status_clicked()
+{
+    this->flag=(this->flag)^1;
+    if(this->flag == 1)
+    {
+        this->second_input->show();
+        this->input2->setFocus();
+        this->status->setStyleSheet("min-width:50px;max-width:50px;background-color:red;font-style:none");
+        this->status->setText("X");
+    }
+    else
+    {
+        this->input1->setFocus();
+        this->second_input->close();
+        this->input2->clear();
+        plotting_graph(this->customplot,this->input1->text(),this->input2->text());
+        this->status->setText("+");
+        this->status->setStyleSheet("min-width:50px;max-width:50px;background-color:green;font-style:bold");
+    }
+}
+
 void MainWindow::on_plot_button_clicked()
 {
     qDebug()<<(this->input1->text())<<(this->input2->text());
@@ -147,6 +168,7 @@ int main(int argc, char *argv[])
     int y = dw.height()*0.9;
     MainWindow window;
     window.setFixedSize(x,y);
+    window.status->setStyleSheet("background-color:green");
 
     // preparing the functions layout
     QWidget *function_widget=new QWidget();
@@ -169,10 +191,12 @@ int main(int argc, char *argv[])
     f1x->setFixedHeight(45);
     first_input_layout->addWidget(f1x);
     first_input_layout->addWidget(window.input1);
+    first_input_layout->addWidget(window.status);
     first_input_layout->setMargin(0);
     QWidget* first_input = new QWidget();
     first_input->setLayout(first_input_layout);
     first_input->setFixedHeight(60);
+
 
     // second input
     QHBoxLayout* second_input_layout = new QHBoxLayout();
@@ -181,16 +205,18 @@ int main(int argc, char *argv[])
     second_input_layout->addWidget(f2x);
     second_input_layout->addWidget(window.input2);
     second_input_layout->setMargin(0);
-    QWidget* second_input = new QWidget();
-    second_input->setLayout(second_input_layout);
-    second_input->setFixedHeight(60);
+    window.second_input->setLayout(second_input_layout);
+    window.second_input->setFixedHeight(60);
 
     QVBoxLayout *plot = new QVBoxLayout();
     plot->addWidget(first_input);
-    plot->addWidget(second_input);
+    plot->addWidget(window.second_input);
     plot->addWidget(plot_button);
     plot->addWidget(window.customplot);
     plot->setAlignment(plot_button,Qt::AlignRight);
+
+    // for dynamic appearance or closing of second input;
+    QObject::connect(window.status,SIGNAL(clicked(bool)),&window,SLOT(on_status_clicked()));
 
     QWidget *rightpart = new QWidget();
     rightpart->setLayout(plot);
@@ -198,6 +224,8 @@ int main(int argc, char *argv[])
     QGridLayout *full_screen = new QGridLayout();
     full_screen->addWidget(function_widget,0,0,5,2);
     full_screen->addWidget(rightpart,0,4,20,8);
+
+    window.second_input->close();
 
     QWidget *display = new QWidget();
     display->setLayout(full_screen);
@@ -240,6 +268,9 @@ int main(int argc, char *argv[])
                          "}"
 
                          );
+
+    window.status->setStyleSheet("min-width:50px;max-width:50px;background-color:green;font-style:bold");
+
     window.show();
     return a.exec();
 }

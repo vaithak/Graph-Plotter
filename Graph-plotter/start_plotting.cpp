@@ -79,12 +79,15 @@ void string_mod(QString &inputted1 , QString &inputted2)
 void plotting_graph(QCustomPlot *customPlot, QString input_data_1, QString input_data_2)
 {
     QScriptEngine engine;
+    customPlot->clearGraphs();
 
     QVector<double> x1(20001),y1(20001),x2(20001),y2(20001); // initialize with entries 0..10000
     string_mod(input_data_1,input_data_2);
 
     // for intersection points
     QVector<double> xint,yint;
+    xint.clear();
+    yint.clear();
 
     // for testing user input
     qDebug()<<input_data_1<<input_data_2;
