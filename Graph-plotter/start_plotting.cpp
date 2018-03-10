@@ -24,24 +24,33 @@ void string_mod(QString &inputted1 , QString &inputted2)
 
     //Mathematical constants
 
-    inputted1.replace("e","Math.E");
+    QRegularExpression re("(?<![sc])e");
+    inputted1.replace(re,"Math.E");
     inputted1.replace("pi","Math.PI");
     inputted1.replace("π","Math.PI");
 
-    inputted2.replace("e","Math.E");
+    inputted2.replace(re,"Math.E");
     inputted2.replace("pi","Math.PI");
     inputted2.replace("π","Math.PI");
 
     // trignometric functions
 
-    QRegularExpression re("(?<!c)sin"); // so that arcsin doesn't become arcMath.sin
+    re.setPattern("cosec\(([^)]+)\)");
+    inputted1.replace(re,"1/(sin\\1)");
+    inputted2.replace(re,"1/(sin\\1)");
+
+    re.setPattern("sec\(([^)]+)\)");
+    inputted1.replace(re,"1/(cos\\1)");
+    inputted2.replace(re,"1/(cos\\1)");
+
+    re.setPattern("(?<!c)sin"); // so that arcsin doesn't become arcMath.sin
     inputted1.replace(re,"Math.sin");
     inputted1.replace("arcsin","Math.asin");
     inputted2.replace(re,"Math.sin");
     inputted2.replace("arcsin","Math.asin");
 
     re.setPattern("(?<!c)cos"); // so that arccos doesn't become arcMath.cos
-    inputted1.replace(re,"Math.cos");
+    inputted1.replace(re,"Math.cos"); // also works for cosecant funcion
     inputted1.replace("arccos","Math.acos");
     inputted2.replace(re,"Math.cos");
     inputted2.replace("arccos","Math.acos");
