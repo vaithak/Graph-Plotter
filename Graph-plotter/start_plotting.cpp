@@ -43,6 +43,10 @@ void string_mod(QString &inputted1 , QString &inputted2)
     inputted1.replace(re,"1/(cos\\1)");
     inputted2.replace(re,"1/(cos\\1)");
 
+    re.setPattern("cot\(([^)]+)\)");
+    inputted1.replace(re,"1/(tan\\1)");
+    inputted2.replace(re,"1/(tan\\1)");
+
     re.setPattern("(?<!c)sin"); // so that arcsin doesn't become arcMath.sin
     inputted1.replace(re,"Math.sin");
     inputted1.replace("arcsin","Math.asin");
@@ -60,13 +64,6 @@ void string_mod(QString &inputted1 , QString &inputted2)
     inputted1.replace("arctan","Math.atan");
     inputted2.replace(re,"Math.tan");
     inputted2.replace("arctan","Math.atan");
-
-    re.setPattern("(?<!c)cot"); // so that arccot doesn't become arcMath.cot
-    inputted1.replace(re,"Math.cot");
-    inputted1.replace("arccot","Math.acot");
-    inputted2.replace(re,"Math.cot");
-    inputted2.replace("arccot","Math.acot");
-
 
     // basic statistical functions
 
