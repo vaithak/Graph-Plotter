@@ -117,7 +117,12 @@ void MainWindow::function_clicked()
     QLineEdit* current = qobject_cast<QLineEdit*>(this->focusWidget());
     if(current!=0)
     {
-        if(press->text() == '(' || press->text() == ')' || press->text()=="π" || press->text()=="e")
+        if(press->text() == '(')
+        {
+            current->insert("()");
+            current->cursorBackward(false);
+        }
+        else if(press->text() == ')' || press->text()=="π" || press->text()=="e")
         {
             current->insert(press->text());
         }
@@ -127,7 +132,9 @@ void MainWindow::function_clicked()
         }
         else
         {
-            current->insert(press->text() + '(');
+            current->insert(press->text());
+            current->insert("()");
+            current->cursorBackward(false);
         }
     }
 }
