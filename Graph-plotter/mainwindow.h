@@ -17,6 +17,8 @@ public:
     QPushButton* status= new QPushButton("+");
     QWidget* second_input = new QWidget();
     int flag;
+    QCPItemTracer *tracer = new QCPItemTracer(customplot);
+    QCPItemText *textItem = new QCPItemText(customplot);
     MainWindow()
     {
         flag=0;
@@ -26,6 +28,7 @@ public slots:
         void on_plot_button_clicked();
         void function_clicked();
         void on_status_clicked();
+        void showPointToolTip(QMouseEvent*);
     };
 
 #endif // MAINWINDOW_H

@@ -104,11 +104,29 @@ QWidget* MainWindow::functions_disp()
     QObject::connect(open,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
     QObject::connect(closed,SIGNAL(clicked(bool)),this,SLOT(function_clicked()));
 
+    QObject::connect(this->customplot, SIGNAL(mouseMove(QMouseEvent*)), this,SLOT(showPointToolTip(QMouseEvent*)));
 
     // adding buttons into layout and finally into a widget
     QWidget *function_widget = new QWidget();
     function_widget->setLayout(functions);
     return function_widget;
+}
+
+void MainWindow::showPointToolTip(QMouseEvent *event)
+{
+    double x = this->customplot->xAxis->pixelToCoord(event->pos().x()) , y;
+    QList<QCPGraph*> chk_list = (this->customplot->selectedGraphs());
+    if(!chk_list.isEmpty())
+    {
+        QCPGraph* selected = chk_list[0];
+        tracer->setGraph(selected);
+        tracer->setGraphKey(x);
+        y = tracer->position->value();
+        this->textItem->setText(QString::number(x,'f',2) + "," + QString::number(y,'f',2));
+        this->textItem->position->setCoords(QPointF(x, y));
+        this->textItem->setFont(QFont(font().family(), 10));
+        this->customplot->replot();
+    }
 }
 
 void MainWindow::function_clicked()
@@ -174,6 +192,7 @@ int main(int argc, char *argv[])
     int x = dw.width()*0.9;
     int y = dw.height()*0.9;
     MainWindow window;
+
     window.setFixedSize(x,y);
     window.status->setStyleSheet("background-color:green");
 
@@ -233,6 +252,7 @@ int main(int argc, char *argv[])
     full_screen->addWidget(rightpart,0,4,20,8);
 
     window.second_input->close();
+
 
     QWidget *display = new QWidget();
     display->setLayout(full_screen);
